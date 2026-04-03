@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q1 2026 Monthly Outbound Campaign Reviews</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#f8f9fb;color:#1e293b;padding:24px;min-height:100vh;line-height:1.6}
+.container{max-width:1100px;margin:0 auto}
+header{text-align:center;margin-bottom:32px}
+header h1{font-size:28px;font-weight:800;color:#1e293b;margin-bottom:6px}
+header p{font-size:14px;color:#64748b;margin-bottom:12px}
+.badge{display:inline-block;font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;margin:0 4px}
+.badge-draft{background:#fef3c7;color:#92400e}
+.badge-q1{background:#6366f1;color:#fff}
+.badge-calling{background:#fee2e2;color:#991b1b}
+.badge-open{background:#fef9c3;color:#854d0e}
+
+/* Draft banner */
+.draft-banner{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:16px 20px;margin-bottom:24px;font-size:13px;color:#92400e}
+.draft-banner strong{color:#78350f}
+.draft-banner ul{margin:8px 0 0 20px;list-style:disc}
+
+/* Month tabs */
+.month-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.month-tab{padding:10px 24px;border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;border:2px solid #e5e7eb;background:#fff;transition:all .2s}
+.month-tab:hover{border-color:#6366f1;color:#6366f1}
+.month-tab.active{background:#6366f1;color:#fff;border-color:#6366f1}
+.month-tab.active-jan{background:#f97316;border-color:#f97316;color:#fff}
+.month-tab.active-feb{background:#8b5cf6;border-color:#8b5cf6;color:#fff}
+.month-tab.active-mar{background:#22c55e;border-color:#22c55e;color:#fff}
+.month-tab.active-q1{background:#1e293b;border-color:#1e293b;color:#fff}
+
+/* Month content */
+.month-content{display:none}
+.month-content.active{display:block}
+
+/* KPI row */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.kpi{background:#fff;border-radius:12px;padding:20px;border:1px solid #e5e7eb;text-align:center;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.kpi.c1::before{background:#6366f1}.kpi.c2::before{background:#f97316}.kpi.c3::before{background:#22c55e}.kpi.c4::before{background:#8b5cf6}
+.kpi-label{font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.kpi-val{font-size:32px;font-weight:800;color:#1e293b}
+.kpi-sub{font-size:12px;color:#94a3b8;margin-top:2px}
+
+/* Section card */
+.section{background:#fff;border-radius:12px;border:1px solid #e5e7eb;margin-bottom:16px;overflow:hidden}
+.section-header{padding:16px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none;transition:background .15s}
+.section-header:hover{background:#f8fafc}
+.section-header h3{font-size:15px;font-weight:700;color:#1e293b;display:flex;align-items:center;gap:8px}
+.section-header .arrow{font-size:12px;color:#94a3b8;transition:transform .2s}
+.section.open .arrow{transform:rotate(90deg)}
+.section-body{display:none;padding:0 20px 20px}
+.section.open .section-body{display:block}
+
+/* Campaign card */
+.campaign{background:#f8fafc;border-radius:8px;padding:14px 16px;margin-bottom:10px;border-left:4px solid #e5e7eb;font-size:13px}
+.campaign.tier-red{border-left-color:#ef4444}
+.campaign.tier-orange{border-left-color:#f97316}
+.campaign.tier-yellow{border-left-color:#eab308}
+.campaign.tier-green{border-left-color:#22c55e}
+.campaign.tier-purple{border-left-color:#8b5cf6}
+.campaign.tier-blue{border-left-color:#3b82f6}
+.campaign.tier-partner{border-left-color:#ec4899}
+.campaign .camp-name{font-weight:700;font-size:14px;margin-bottom:6px;color:#1e293b}
+.campaign .camp-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px 16px;color:#64748b;font-size:12px}
+.campaign .camp-meta span{display:block}
+.campaign .camp-meta strong{color:#475569}
+
+/* Narrative block */
+.narrative{font-size:14px;color:#374151;margin:14px 0;line-height:1.7}
+.narrative p{margin-bottom:12px}
+
+/* Metrics table */
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin:16px 0}
+.metric-box{background:#f8fafc;border-radius:8px;padding:16px;border:1px solid #f1f5f9}
+.metric-box h4{font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px}
+.metric-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;border-bottom:1px solid #f1f5f9}
+.metric-row:last-child{border-bottom:none}
+.metric-row .label{color:#64748b}
+.metric-row .val{font-weight:600;color:#1e293b}
+.metric-row .pct{color:#94a3b8;font-size:11px;margin-left:4px}
+.placeholder{color:#ef4444;font-style:italic;font-weight:500}
+
+/* Response table */
+table.resp{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+table.resp th{text-align:left;padding:8px 10px;border-bottom:2px solid #e5e7eb;color:#64748b;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+table.resp td{padding:8px 10px;border-bottom:1px solid #f1f5f9}
+table.resp tr:hover{background:#f8fafc}
+.tier-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
+
+/* Bullet lists */
+.section-body ul{margin:8px 0 8px 20px;font-size:14px;color:#374151}
+.section-body ul li{margin-bottom:6px;line-height:1.6}
+.section-body ul li strong{color:#1e293b}
+
+/* Checklist */
+.checklist{list-style:none;margin:8px 0;padding:0}
+.checklist li{padding:6px 0;font-size:14px;color:#374151;display:flex;align-items:flex-start;gap:8px}
+.checklist li::before{content:'';display:inline-block;width:16px;height:16px;min-width:16px;border:2px solid #d1d5db;border-radius:4px;margin-top:3px}
+
+/* Sub headers */
+.sub-header{font-size:13px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.5px;margin:18px 0 10px;padding-bottom:6px;border-bottom:1px solid #f1f5f9}
+
+/* Warning box */
+.warning{background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:10px 14px;font-size:12px;color:#92400e;margin:10px 0}
+
+/* Q1 Summary */
+table.summary{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0}
+table.summary th{padding:10px 12px;border-bottom:2px solid #e5e7eb;color:#64748b;font-weight:700;font-size:11px;text-transform:uppercase;text-align:left}
+table.summary td{padding:10px 12px;border-bottom:1px solid #f1f5f9}
+table.summary td:first-child{font-weight:600;color:#1e293b}
+table.summary tr:hover{background:#f8fafc}
+table.summary .total{font-weight:700;background:#f8fafc}
+
+/* Trend cards */
+.trends{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.trend{background:#f8fafc;border-radius:8px;padding:14px 16px;border:1px solid #f1f5f9}
+.trend .trend-num{font-size:11px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.trend .trend-text{font-size:13px;color:#374151;font-weight:500}
+
+footer{text-align:center;padding:32px 0 16px;color:#94a3b8;font-size:12px}
+
+@media(max-width:900px){
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .metrics-grid{grid-template-columns:1fr}
+  .trends{grid-template-columns:1fr}
+  .month-tabs{gap:6px}
+  .month-tab{padding:8px 16px;font-size:13px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Monthly Outbound Campaign Reviews</h1>
+  <p>Q1 2026 (January &ndash; March)</p>
+  <span class="badge badge-q1">Q1 2026</span>
+  <span class="badge badge-open">Open rates unreliable</span>
+</header>
+
+<!-- MONTH TABS -->
+<div class="month-tabs">
+  <div class="month-tab active active-jan" onclick="showMonth('jan')">January</div>
+  <div class="month-tab" onclick="showMonth('feb')">February</div>
+  <div class="month-tab" onclick="showMonth('mar')">March</div>
+  <div class="month-tab" onclick="showMonth('q1')">Q1 Summary</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- JANUARY 2026 -->
+<!-- ============================================================ -->
+<div id="month-jan" class="month-content active">
+
+<div class="kpi-row">
+  <div class="kpi c1"><div class="kpi-label">Meetings Booked</div><div class="kpi-val">~17</div><div class="kpi-sub">Outbound Stage 0</div></div>
+  <div class="kpi c2"><div class="kpi-label">Emails Sent</div><div class="kpi-val">2,176</div><div class="kpi-sub">37 replied (1.7%)</div></div>
+  <div class="kpi c3"><div class="kpi-label">LinkedIn Invites</div><div class="kpi-val">1,155</div><div class="kpi-sub">255 accepted (22%)</div></div>
+  <div class="kpi c4"><div class="kpi-label">Active Campaigns</div><div class="kpi-val">10</div><div class="kpi-sub">6 new + 4 carryover</div></div>
+</div>
+
+<!-- Campaign Overview -->
+<div class="section open">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#128203;</span> Campaign Overview</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <div class="sub-header">Campaigns active this month</div>
+
+    <div class="campaign tier-yellow">
+      <div class="camp-name">1. Chocolate Campaign n4 | Materials Manufacturers</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Netherlands</span>
+        <span><strong>Vertical:</strong> Materials Manufacturing</span>
+        <span><strong>Size:</strong> 50-500 FTEs</span>
+        <span><strong>DMUs:</strong> C-Level, Owner, Director</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#eab308"></span>Yellow</span>
+        <span><strong>Messaging:</strong> Chocolate Gift Approach</span>
+        <span><strong>Timeline:</strong> Started end of December &mdash; ran through January</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-red">
+      <div class="camp-name">2. Food Producers NL | 50-200 FTE</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Netherlands</span>
+        <span><strong>Vertical:</strong> Agriculture &amp; Food Production</span>
+        <span><strong>Size:</strong> 50-200 FTEs</span>
+        <span><strong>DMUs:</strong> C-Level, Director</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#ef4444"></span>Red</span>
+        <span><strong>Messaging:</strong> Industry-specific pain points + social proof</span>
+        <span><strong>Timeline:</strong> Started mid-January</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-orange">
+      <div class="camp-name">3. ABM 1 - Wholesale NL | 200-500 FTE</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Netherlands</span>
+        <span><strong>Vertical:</strong> Wholesale</span>
+        <span><strong>Size:</strong> 200-500 FTEs</span>
+        <span><strong>DMUs:</strong> Growth, Operations</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#f97316"></span>Orange (ABM)</span>
+        <span><strong>Messaging:</strong> ABM-driven, tailored to company awareness stage</span>
+        <span><strong>Timeline:</strong> Started 20 January</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-yellow">
+      <div class="camp-name">4. Chocolate Campaign n5 | Manufacturers +200 FTE</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Netherlands</span>
+        <span><strong>Vertical:</strong> Manufacturing</span>
+        <span><strong>Size:</strong> +200 FTEs</span>
+        <span><strong>DMUs:</strong> C-Level, Director, Operations</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#eab308"></span>Yellow</span>
+        <span><strong>Messaging:</strong> Chocolate Gift Approach</span>
+        <span><strong>Timeline:</strong> Started 20 January</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-red">
+      <div class="camp-name">5. Materials Manufacturers NL | 200-500 FTE</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Netherlands</span>
+        <span><strong>Vertical:</strong> Materials Manufacturing</span>
+        <span><strong>Size:</strong> 200-500 FTEs</span>
+        <span><strong>DMUs:</strong> Operations, Director</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#ef4444"></span>Red</span>
+        <span><strong>Messaging:</strong> Specific manual processes and pain points</span>
+        <span><strong>Timeline:</strong> Started 20 January</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-purple">
+      <div class="camp-name">6. Rapid - MD Manufacturers 200-1K FTE NL</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Netherlands</span>
+        <span><strong>Vertical:</strong> Manufacturing (ERP-focused)</span>
+        <span><strong>Size:</strong> 200-1,000 FTEs</span>
+        <span><strong>DMUs:</strong> Managing Directors</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#8b5cf6"></span>Purple (Experiment)</span>
+        <span><strong>Messaging:</strong> ERP-focused experiment</span>
+        <span><strong>Timeline:</strong> Started 21 January</span>
+      </div>
+    </div>
+
+    <div class="sub-header">Carryover campaigns from Q4 still actively sending</div>
+
+    <div class="campaign tier-red">
+      <div class="camp-name">7. Logistics n3 NL | 50-200 FTE <span style="color:#94a3b8;font-weight:400">(from Nov)</span></div>
+      <div class="camp-meta"><span>Red &mdash; 437 emails + 197 LinkedIn invites sent in January</span></div>
+    </div>
+    <div class="campaign tier-orange">
+      <div class="camp-name">8. Innovation Labs Manufacturing v1 DE | +1K FTE <span style="color:#94a3b8;font-weight:400">(from Nov)</span></div>
+      <div class="camp-meta"><span>Orange &mdash; 233 emails + 151 LinkedIn invites sent</span></div>
+    </div>
+    <div class="campaign tier-red">
+      <div class="camp-name">9. Transportation &amp; Logistics NL | +200 FTE <span style="color:#94a3b8;font-weight:400">(from Oct)</span></div>
+      <div class="camp-meta"><span>Red &mdash; 233 emails + 109 LinkedIn invites sent</span></div>
+    </div>
+    <div class="campaign tier-red">
+      <div class="camp-name">10. Logistics n2 NL | 200-1K FTE <span style="color:#94a3b8;font-weight:400">(from Nov)</span></div>
+      <div class="camp-meta"><span>Red &mdash; 109 emails + 8 LinkedIn invites sent (winding down)</span></div>
+    </div>
+
+    <div class="sub-header">Target segments and company profiles</div>
+    <div class="narrative">
+      <p>January was a transition month &mdash; recovering from the December holiday period while launching the next wave of campaigns. The month started with carryover campaigns from Q4 (Logistics, Innovation Labs, Chocolate n3) winding down, while six new campaigns launched from mid-January onward. The focus shifted toward Materials Manufacturing and Food Production as new verticals, alongside continued success with the chocolate gift approach.</p>
+      <p>Company sizes ranged from 50 to 1,000+ FTEs, with new campaigns increasingly targeting the 200-500 FTE sweet spot. The Netherlands remained the primary market, with Germany receiving continued attention through the Innovation Labs DE carryover. A Referral Partners outreach was also initiated for the first time, marking a new channel.</p>
+    </div>
+
+    <div class="sub-header">Key messaging themes</div>
+    <div class="narrative">
+      <p>Chocolate gift campaigns continuing from Q4 (n4 carried over, n5 launched). Industry-specific pain points for Food Producers and Materials Manufacturers. ABM-driven tailored messaging for Wholesale. An experimental ERP-focused approach for Managing Directors (Rapid/Purple). First dedicated partner outreach. Compared to Q4, a clear move away from Innovation Labs/corporate targeting toward smaller, more decision-maker-dense companies.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Performance Metrics -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#128200;</span> Performance Metrics</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <div class="metrics-grid">
+      <div class="metric-box">
+        <h4>Email</h4>
+        <div class="metric-row"><span class="label">Sent</span><span class="val">2,176</span></div>
+        <div class="metric-row"><span class="label">Delivered</span><span class="val">2,078<span class="pct">(95%)</span></span></div>
+        <div class="metric-row"><span class="label">Opened</span><span class="val">660<span class="pct">(30%)*</span></span></div>
+        <div class="metric-row"><span class="label">Replied</span><span class="val">37<span class="pct">(1.7%)</span></span></div>
+      </div>
+      <div class="metric-box">
+        <h4>LinkedIn</h4>
+        <div class="metric-row"><span class="label">Invites sent</span><span class="val">1,155</span></div>
+        <div class="metric-row"><span class="label">Accepted</span><span class="val">255<span class="pct">(22%)</span></span></div>
+        <div class="metric-row"><span class="label">Messages sent</span><span class="val">363</span></div>
+        <div class="metric-row"><span class="label">Opened</span><span class="val">217<span class="pct">(60%)</span></span></div>
+        <div class="metric-row"><span class="label">Replied</span><span class="val">85<span class="pct">(23%)</span></span></div>
+      </div>
+      <div class="metric-box">
+        <h4>Calling</h4>
+        <div class="metric-row"><span class="label">Calls made</span><span class="val">101</span></div>
+        <div class="metric-row"><span class="label">Answered</span><span class="val">31<span class="pct">(31%)</span></span></div>
+      </div>
+    </div>
+    <div class="warning">*Email open rates may be partially inflated by bot/spam checkers. From Feb onward this issue escalates &mdash; treat open rates with caution.</div>
+
+    <div class="sub-header">Meeting bookings</div>
+    <div class="narrative">
+      <p><strong>~17 Outbound Meetings booked this month.</strong></p>
+      <p>January was a ramp-up month after the holiday period. With ~17 outbound meetings (compared to 24 in December), performance was lower but expected given the seasonal reset. Chocolate campaigns (n4 carryover + n5 launch) continued to be the primary driver. Carryover campaigns contributed additional replies, particularly Transportation &amp; Logistics NL (11 email replies) and Logistics n3 (14 LinkedIn replies).</p>
+      <p>By campaign color: Yellow (gift) dominated, Red contributed through carryover, and the first Orange (ABM) and Purple (experiment) campaigns were still building pipeline.</p>
+    </div>
+
+    <div class="sub-header">Response rate by campaign</div>
+    <table class="resp">
+      <thead><tr><th>#</th><th>Campaign</th><th>Total Replies</th><th>Email</th><th>LinkedIn</th><th>Calls</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><span class="tier-dot" style="background:#ef4444"></span>Food Producers NL</td><td><strong>23</strong></td><td>4</td><td>19</td><td>&mdash;</td></tr>
+        <tr><td>2</td><td><span class="tier-dot" style="background:#ef4444"></span>Logistics n3 NL</td><td><strong>19</strong></td><td>5</td><td>14</td><td>&mdash;</td></tr>
+        <tr><td>3</td><td><span class="tier-dot" style="background:#ef4444"></span>Materials Manufacturers NL</td><td><strong>17</strong></td><td>3</td><td>14</td><td>&mdash;</td></tr>
+        <tr><td>4</td><td><span class="tier-dot" style="background:#ef4444"></span>Transportation &amp; Logistics NL</td><td><strong>15</strong></td><td>11</td><td>4</td><td>&mdash;</td></tr>
+        <tr><td>5</td><td><span class="tier-dot" style="background:#eab308"></span>Chocolate Campaign n4</td><td><strong>12</strong></td><td>4</td><td>8</td><td>142</td></tr>
+        <tr><td>6</td><td><span class="tier-dot" style="background:#f97316"></span>ABM 1 - Wholesale NL</td><td><strong>11</strong></td><td>4</td><td>7</td><td>&mdash;</td></tr>
+        <tr><td>7</td><td><span class="tier-dot" style="background:#ef4444"></span>Logistics n2 NL</td><td><strong>8</strong></td><td>4</td><td>4</td><td>&mdash;</td></tr>
+        <tr><td>8</td><td><span class="tier-dot" style="background:#f97316"></span>Innovation Labs Manufacturing DE</td><td><strong>3</strong></td><td>0</td><td>3</td><td>&mdash;</td></tr>
+        <tr><td>9</td><td><span class="tier-dot" style="background:#eab308"></span>Chocolate Campaign n5</td><td><strong>3</strong></td><td>1</td><td>2</td><td>53</td></tr>
+        <tr><td>10</td><td><span class="tier-dot" style="background:#ec4899"></span>Referral Partners</td><td><strong>2</strong></td><td>0</td><td>2</td><td>&mdash;</td></tr>
+        <tr><td>11</td><td><span class="tier-dot" style="background:#8b5cf6"></span>Rapid - MD Manufacturers</td><td><strong>1</strong></td><td>0</td><td>1</td><td>&mdash;</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-header">Pipeline generated</div>
+    <div class="narrative">
+      <p>January generated 20 new deals in HubSpot from outbound sources (~17 net-new outbound meetings excluding upsells and partner referrals). Notable deals: <strong>Stihl</strong> (EUR 60K, Stage 2), <strong>SCHUNK</strong> (EUR 24K, Stage 1), <strong>Cordstrap</strong> (EUR 24K, Stage 2), <strong>VDL</strong> (EUR 40K, Stage 1). One deal closed won: Ferdinand Zandbergen (EUR 21.6K).</p>
+      <p>January also had a high closed-lost rate (14 deals), suggesting some Q4 pipeline cleanup was happening simultaneously.</p>
+    </div>
+  </div>
+</div>
+
+<!-- What Worked -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#9989;</span> What Worked</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <div class="sub-header">Messaging angles that drove engagement</div>
+    <ul>
+      <li>Subject lines continued to perform well: "Hi {{firstName}}" and "Lleverage x {{companyName}}"</li>
+      <li>Chocolate gift campaigns (n4 + n5) remained the standout &mdash; phone follow-ups essential for converting interest into meetings</li>
+      <li><strong>LinkedIn outperformed email significantly:</strong> 23% reply rate on LinkedIn messages vs. 1.7% on email</li>
+      <li>Transportation &amp; Logistics NL (Q4 carryover) showed that longer-running sequences with multiple touchpoints eventually break through (11 email replies)</li>
+    </ul>
+
+    <div class="sub-header">Segments that responded best</div>
+    <ul>
+      <li><strong>Food Producers (new vertical):</strong> 23 total replies despite launching mid-month. C-Level and Directors at 50-200 FTE food companies showed genuine interest</li>
+      <li><strong>Materials Manufacturers 200-500 FTE:</strong> 17 replies, particularly strong LinkedIn engagement (14 of 17 via LinkedIn)</li>
+      <li><strong>Logistics (carryover):</strong> Smaller companies (50-200 FTE) outperformed mid-size (200-1K FTE) &mdash; confirming Q4 learning about accessible decision-makers</li>
+    </ul>
+
+    <div class="sub-header">Sequences that converted to meetings</div>
+    <ul>
+      <li><strong>Chocolate campaigns (n4 + n5):</strong> Dominated meeting conversion. N4 had 142 calls and n5 had 53 calls</li>
+      <li><strong>Carryover campaigns:</strong> Late-stage replies converted from leads who had been in sequences for weeks</li>
+      <li><strong>New campaigns:</strong> Still in early stages but showing promising reply volumes</li>
+    </ul>
+  </div>
+</div>
+
+<!-- What Didn't Work -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#10060;</span> What Didn't Work</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <div class="sub-header">Low-performing messaging</div>
+    <ul>
+      <li><strong>Innovation Labs DE:</strong> 151 LinkedIn invites + 233 emails = only 3 LinkedIn replies, 0 email replies. Diminishing returns for large (1K+ FTE) companies where innovation roles lack decision-making authority</li>
+      <li><strong>Rapid - MD Manufacturers (Purple):</strong> 1 LinkedIn reply from 65 emails + 34 invites. ERP-focused messaging for MDs didn't generate traction (though launched late)</li>
+    </ul>
+
+    <div class="sub-header">Segments with poor engagement</div>
+    <ul>
+      <li><strong>Large corporations (1K+ FTE):</strong> DMU problem from Q4 persisted &mdash; innovation roles respond but can't book</li>
+      <li><strong>Wholesale 200-500 FTE (ABM):</strong> Only 8.6% LinkedIn acceptance rate &mdash; well below average</li>
+    </ul>
+
+    <div class="sub-header">Deliverability</div>
+    <div class="narrative">
+      <p>Email deliverability dipped to 95% (from 98% in December), with 98 bounces &mdash; likely related to fresh lists from new campaign launches. LinkedIn invite acceptance dropped to 22% (from 34% in November). No major technical issues.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Key Learnings -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#128161;</span> Key Learnings</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <div class="sub-header">Pain points that resonated</div>
+    <ul>
+      <li>Food production: manual order processing and quality documentation challenges</li>
+      <li>Materials manufacturers: invoice matching, ERP data entry when mentioned specifically</li>
+      <li>Chocolate gift approach continues to bypass the "is this relevant?" filter &mdash; prospects respond to gesture rather than message content</li>
+    </ul>
+
+    <div class="sub-header">Objections received</div>
+    <ul>
+      <li>"We just came back from the holidays, reach out later" &mdash; common in early January</li>
+      <li>"We're already working on this internally" &mdash; more frequent in Materials Manufacturing</li>
+      <li>Innovation Labs contacts reiterated that AI decisions go through centralized departments</li>
+      <li>Some Food Producer contacts cited budget cycles starting in Q2</li>
+    </ul>
+
+    <div class="sub-header">Patterns: who responds vs. who books</div>
+    <ul>
+      <li>LinkedIn drives higher-quality responses &mdash; more conversational, more meetings</li>
+      <li>Calling remains critical for gift campaigns &mdash; chocolate opens door, phone books the meeting</li>
+      <li>50-200 FTE segment most responsive and most likely to convert</li>
+      <li>Food Producers and Materials Manufacturers showed promising early engagement</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Actions -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#127919;</span> Actions for Next Month</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <ul class="checklist">
+      <li>Scale up campaign launches to maintain momentum after January's ramp-up</li>
+      <li>Continue chocolate gift campaigns given consistent performance</li>
+      <li>Launch "Traditional" campaign format across multiple verticals simultaneously</li>
+      <li>Introduce ABM Company Aware sequences across Dutch verticals</li>
+      <li>Test "Free PoC" messaging angle &mdash; 3-day proof of concept as direct CTA</li>
+      <li>Expand into Machinery Manufacturing DE (not Innovation Labs)</li>
+      <li>Launch dedicated campaigns for Import &amp; Export NL</li>
+      <li>Deprioritize Innovation Labs targeting for 1K+ FTE companies</li>
+    </ul>
+  </div>
+</div>
+
+</div><!-- /jan -->
+
+
+<!-- ============================================================ -->
+<!-- FEBRUARY 2026 -->
+<!-- ============================================================ -->
+<div id="month-feb" class="month-content">
+
+<div class="kpi-row">
+  <div class="kpi c1"><div class="kpi-label">Meetings Booked</div><div class="kpi-val">~33</div><div class="kpi-sub">Outbound Stage 0</div></div>
+  <div class="kpi c2"><div class="kpi-label">Emails Sent</div><div class="kpi-val">3,714</div><div class="kpi-sub">31 replied (0.8%)</div></div>
+  <div class="kpi c3"><div class="kpi-label">LinkedIn Invites</div><div class="kpi-val">1,537</div><div class="kpi-sub">267 accepted (17%)</div></div>
+  <div class="kpi c4"><div class="kpi-label">Active Campaigns</div><div class="kpi-val">14</div><div class="kpi-sub">12 new + 2 carryover</div></div>
+</div>
+
+<!-- Campaign Overview -->
+<div class="section open">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#128203;</span> Campaign Overview</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <div class="sub-header">New campaigns launched in February (15)</div>
+
+    <div class="campaign tier-orange">
+      <div class="camp-name">1. Food Producers &amp; Manufacturers NL | 500-5,000 FTEs</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Netherlands</span><span><strong>Vertical:</strong> Food Manufacturing</span>
+        <span><strong>Size:</strong> 500-5,000 FTEs</span><span><strong>DMUs:</strong> Operations, Director, C-Level</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#f97316"></span>Orange (ABM)</span>
+        <span><strong>Messaging:</strong> ABM-driven, industry-specific challenges</span>
+        <span><strong>Timeline:</strong> Started 2 February</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-red">
+      <div class="camp-name">2. Traditional | Logistics NL 100-1,000 FTEs</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Netherlands</span><span><strong>Vertical:</strong> Logistics, Supply Chain &amp; Transportation</span>
+        <span><strong>Size:</strong> 100-1,000 FTEs</span><span><strong>DMUs:</strong> Operations, Supply Chain, Director</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#ef4444"></span>Red</span>
+        <span><strong>Messaging:</strong> Traditional &mdash; specific manual processes</span>
+        <span><strong>Timeline:</strong> Started 5 February</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-red">
+      <div class="camp-name">3. Traditional | Materials Manufacturing NL 100-5,000 FTEs</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Netherlands</span><span><strong>Vertical:</strong> Materials Manufacturing</span>
+        <span><strong>Size:</strong> 100-5,000 FTEs</span><span><strong>DMUs:</strong> Operations, Director, C-Level</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#ef4444"></span>Red</span>
+        <span><strong>Messaging:</strong> Traditional &mdash; operational pain points</span>
+        <span><strong>Timeline:</strong> Started 5 February</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-red">
+      <div class="camp-name">4. Traditional | Import &amp; Export NL 100-500 FTEs</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Netherlands</span><span><strong>Vertical:</strong> Import &amp; Export</span>
+        <span><strong>Size:</strong> 100-500 FTEs</span><span><strong>DMUs:</strong> Operations, Director, C-Level</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#ef4444"></span>Red</span>
+        <span><strong>Messaging:</strong> Traditional &mdash; import/export operational challenges</span>
+        <span><strong>Timeline:</strong> Started 10 February</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-purple">
+      <div class="camp-name">5. Free PoC | Manufacturers NL 75-500 FTE</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Netherlands</span><span><strong>Vertical:</strong> Manufacturing (broad)</span>
+        <span><strong>Size:</strong> 75-500 FTEs</span><span><strong>DMUs:</strong> Operations, Director, C-Level</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#8b5cf6"></span>Purple (Experiment)</span>
+        <span><strong>Messaging:</strong> Free 3-day PoC as primary CTA</span>
+        <span><strong>Timeline:</strong> Started 12 February</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-green">
+      <div class="camp-name">6. ABM Company Aware | Dutch verticals (5 campaigns)</div>
+      <div class="camp-meta">
+        <span><strong>Verticals:</strong> Manufacturing, Wholesale, Logistics, Import &amp; Export, Food Producers</span>
+        <span><strong>Country:</strong> Netherlands</span><span><strong>Size:</strong> Mixed</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#22c55e"></span>Green (ABM)</span>
+        <span><strong>Messaging:</strong> ABM-driven &mdash; contacts at "Company Aware" stage via LinkedIn Ads</span>
+        <span><strong>Timeline:</strong> All started 17 February</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-red">
+      <div class="camp-name">7. Traditional | Machinery Manufacturing DE 100-500 FTE</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Germany</span><span><strong>Vertical:</strong> Machinery Manufacturing</span>
+        <span><strong>Size:</strong> 100-500 FTEs</span><span><strong>DMUs:</strong> Operations, Director, C-Level</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#ef4444"></span>Red</span>
+        <span><strong>Messaging:</strong> Traditional &mdash; pain points (German language)</span>
+        <span><strong>Timeline:</strong> Started 19 February</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-purple">
+      <div class="camp-name">8-9. Free PoC | Food Producers NL (2 campaigns)</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Netherlands</span><span><strong>Vertical:</strong> Food Production</span>
+        <span><strong>Size:</strong> 50-500 / 70-500 FTEs</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#8b5cf6"></span>Purple (Experiment)</span>
+        <span><strong>Messaging:</strong> Free 3-day PoC offer</span>
+        <span><strong>Timeline:</strong> Started 17 &amp; 23 February</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-yellow">
+      <div class="camp-name">10-11. Gift Import &amp; Export NL + Gift Horticulture NL</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Netherlands</span><span><strong>Verticals:</strong> Import &amp; Export, Horticulture (NEW)</span>
+        <span><strong>Size:</strong> 50-500 FTEs</span><span><strong>DMUs:</strong> C-Level, Director, Owner</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#eab308"></span>Yellow</span>
+        <span><strong>Messaging:</strong> Gift approach in new verticals</span>
+        <span><strong>Timeline:</strong> Started 24 February</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-purple">
+      <div class="camp-name">12. Free PoC | Materials Manufacturers NL 50-500 FTE</div>
+      <div class="camp-meta">
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#8b5cf6"></span>Purple</span>
+        <span><strong>Timeline:</strong> Started 26 February</span>
+      </div>
+    </div>
+
+    <div class="sub-header">Carryover from January still actively sending</div>
+    <div class="campaign tier-yellow">
+      <div class="camp-name">13. Chocolate Campaign n5 | Manufacturers +200 FTE <span style="color:#94a3b8;font-weight:400">(carryover from Jan)</span></div>
+      <div class="camp-meta"><span>Yellow &mdash; calling follow-ups continuing (132 calls)</span></div>
+    </div>
+    <div class="campaign tier-yellow">
+      <div class="camp-name">14. Chocolate n6 | Machinery Manufacturers NL 100-500 FTEs</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Netherlands</span><span><strong>Vertical:</strong> Machinery Manufacturing</span>
+        <span><strong>Size:</strong> 100-500 FTEs</span><span><strong>DMUs:</strong> C-Level, Director, Owner</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#eab308"></span>Yellow</span>
+        <span><strong>Messaging:</strong> Chocolate Gift Approach</span>
+        <span><strong>Timeline:</strong> Started 5 February</span>
+      </div>
+    </div>
+
+    <div class="sub-header">Target segments and company profiles</div>
+    <div class="narrative">
+      <p>February was a major scale-up month &mdash; 14 campaigns actively sending, the most in a single month since outbound began. Three strategic shifts happened simultaneously:</p>
+      <p><strong>1.</strong> The "Traditional" format deployed across four verticals (Logistics NL, Materials Manufacturing NL, Import &amp; Export NL, Machinery Manufacturing DE), standardizing messaging around manual process pain points.</p>
+      <p><strong>2.</strong> ABM Company Aware sequences launched for all five Dutch ICP verticals, creating the first structured link between LinkedIn Ads awareness and outbound sequences.</p>
+      <p><strong>3.</strong> The "Free PoC" angle tested across three campaigns, offering the 3-day proof of concept as the primary hook.</p>
+      <p>Two new verticals were tested for the first time: <strong>Import &amp; Export</strong> and <strong>Horticulture</strong> &mdash; both with gift and traditional approaches.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Performance Metrics -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#128200;</span> Performance Metrics</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <div class="metrics-grid">
+      <div class="metric-box">
+        <h4>Email</h4>
+        <div class="metric-row"><span class="label">Sent</span><span class="val">3,714</span></div>
+        <div class="metric-row"><span class="label">Delivered</span><span class="val">3,649<span class="pct">(98%)</span></span></div>
+        <div class="metric-row"><span class="label">Opened</span><span class="val">2,482<span class="pct">(67%)*</span></span></div>
+        <div class="metric-row"><span class="label">Replied</span><span class="val">31<span class="pct">(0.8%)</span></span></div>
+      </div>
+      <div class="metric-box">
+        <h4>LinkedIn</h4>
+        <div class="metric-row"><span class="label">Invites sent</span><span class="val">1,537</span></div>
+        <div class="metric-row"><span class="label">Accepted</span><span class="val">267<span class="pct">(17%)</span></span></div>
+        <div class="metric-row"><span class="label">Messages sent</span><span class="val">418</span></div>
+        <div class="metric-row"><span class="label">Opened</span><span class="val">151<span class="pct">(36%)</span></span></div>
+        <div class="metric-row"><span class="label">Replied</span><span class="val">67<span class="pct">(16%)</span></span></div>
+      </div>
+      <div class="metric-box">
+        <h4>Calling</h4>
+        <div class="metric-row"><span class="label">Calls made</span><span class="val">148</span></div>
+        <div class="metric-row"><span class="label">Answered</span><span class="val">44<span class="pct">(30%)</span></span></div>
+      </div>
+    </div>
+    <div class="warning">*Email open rates are unreliable &mdash; the 67% figure is likely inflated by email bot/spam checkers. These bots "open" emails to scan for malicious content and get counted as opens. Open rates should not be used for campaign comparison.</div>
+
+    <div class="sub-header">Meeting bookings</div>
+    <div class="narrative">
+      <p><strong>~33 Outbound Meetings booked this month</strong> &mdash; the strongest month in Lleverage's outbound history.</p>
+      <p>Nearly doubled January's performance. Driven by scale (3,714 emails + 1,537 LinkedIn invites) and continued gift campaign effectiveness. Chocolate n6 drove the lion's share with 176 calls. Chocolate n5 carryover added 132 calls. The "Traditional" and ABM sequences started generating their first meetings toward month-end.</p>
+      <p>By color: Yellow dominated, Green (ABM) started contributing for the first time, Red (Traditional) began generating meetings, Purple (Free PoC) showed early promise.</p>
+    </div>
+
+    <div class="sub-header">Response rate by campaign</div>
+    <table class="resp">
+      <thead><tr><th>#</th><th>Campaign</th><th>Total Replies</th><th>Email</th><th>LinkedIn</th><th>Calls</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><span class="tier-dot" style="background:#8b5cf6"></span>Free PoC | Manufacturers NL</td><td><strong>13</strong> <span class="pct">(2.2%)</span></td><td>3</td><td>10</td><td>&mdash;</td></tr>
+        <tr><td>2</td><td><span class="tier-dot" style="background:#ef4444"></span>Traditional | Materials Mfg NL</td><td><strong>13</strong> <span class="pct">(2.3%)</span></td><td>5</td><td>8</td><td>&mdash;</td></tr>
+        <tr><td>3</td><td><span class="tier-dot" style="background:#f97316"></span>Food Producers &amp; Mfg NL</td><td><strong>9</strong> <span class="pct">(1.6%)</span></td><td>2</td><td>7</td><td>&mdash;</td></tr>
+        <tr><td>4</td><td><span class="tier-dot" style="background:#ef4444"></span>Traditional | Import &amp; Export NL</td><td><strong>8</strong> <span class="pct">(2.0%)</span></td><td>1</td><td>7</td><td>&mdash;</td></tr>
+        <tr><td>5</td><td><span class="tier-dot" style="background:#ef4444"></span>Traditional | Logistics NL</td><td><strong>8</strong> <span class="pct">(1.3%)</span></td><td>2</td><td>6</td><td>&mdash;</td></tr>
+        <tr><td>6</td><td><span class="tier-dot" style="background:#22c55e"></span>ABM | Dutch Wholesale</td><td><strong>5</strong> <span class="pct">(2.0%)</span></td><td>4</td><td>1</td><td>&mdash;</td></tr>
+        <tr><td>7</td><td><span class="tier-dot" style="background:#ef4444"></span>Traditional | Machinery Mfg DE</td><td><strong>5</strong> <span class="pct">(1.0%)</span></td><td>2</td><td>3</td><td>&mdash;</td></tr>
+        <tr><td>8</td><td><span class="tier-dot" style="background:#eab308"></span>Chocolate n6 | Machinery Mfg</td><td><strong>4</strong></td><td>0</td><td>4</td><td>176</td></tr>
+        <tr><td>9</td><td><span class="tier-dot" style="background:#ec4899"></span>Referral Partners v1 (carryover)</td><td><strong>4</strong></td><td>1</td><td>3</td><td>&mdash;</td></tr>
+        <tr><td>10</td><td><span class="tier-dot" style="background:#22c55e"></span>ABM | Dutch Manufacturing</td><td><strong>3</strong> <span class="pct">(0.7%)</span></td><td>2</td><td>1</td><td>&mdash;</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-header">Pipeline generated</div>
+    <div class="narrative">
+      <p>42 new deals in HubSpot (~33 net-new outbound + 7 partner + 2 upsells). Notable deals: <strong>Royal A-ware</strong> (EUR 144K, Stage 5), <strong>HDG</strong> (EUR 48K, Stage 3), <strong>AWL</strong> (Stage 4), <strong>Fullwood JOZ</strong> (Stage 4). Two closed won: Schreuders Groen (EUR 12K) and Upsell Oude Reimer (EUR 4.8K).</p>
+      <p>February also marked the emergence of the <strong>partner pipeline</strong> &mdash; 7 deals from partners (Kodify, Incentro, Itility, Korper ICT, Spaik x2, Centric), validating the January referral outreach. Closed-lost rate improved: only 9 deals lost vs. 14 in January, despite 2x the volume.</p>
+    </div>
+  </div>
+</div>
+
+<!-- What Worked -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#9989;</span> What Worked</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <div class="sub-header">Messaging angles that drove engagement</div>
+    <ul>
+      <li>"Traditional" pain-point messaging generated consistent reply rates across all verticals. Mentioning specific manual processes like "orders die handmatig worden overgetikt in het ERP" resonated with Operations roles</li>
+      <li><strong>"Free PoC" showed strongest reply rate among non-gift campaigns (2.2%).</strong> Leading with "We bouwen in 3 dagen een werkend prototype" was concrete and low-risk</li>
+      <li>ABM Company Aware benefited from prior LinkedIn Ad exposure &mdash; Wholesale segment hit 2.0% reply rate</li>
+      <li>Chocolate n6 continued the gift formula: gift opens the door, call closes the meeting</li>
+    </ul>
+
+    <div class="sub-header">Segments that responded best</div>
+    <ul>
+      <li><strong>Materials Manufacturing NL:</strong> Strongest reply volume among Traditional campaigns (13 replies)</li>
+      <li><strong>Import &amp; Export NL (new vertical):</strong> Surprisingly strong engagement &mdash; 8 replies from first dedicated campaign</li>
+      <li><strong>Food Production:</strong> Three campaigns ran simultaneously with strong combined volume</li>
+      <li><strong>Partner contacts:</strong> Referral outreach led to 7 partner pipeline deals, validating the channel</li>
+    </ul>
+
+    <div class="sub-header">Sequences that converted to meetings</div>
+    <ul>
+      <li><strong>Chocolate n6 + n5 carryover:</strong> 308 combined calls &mdash; dominant meeting generators</li>
+      <li><strong>Traditional | Materials Manufacturing NL:</strong> First non-gift campaign to consistently convert replies to meetings</li>
+      <li><strong>Free PoC | Manufacturers NL:</strong> Early meetings from the PoC angle, especially LinkedIn replies</li>
+      <li><strong>ABM Company Aware:</strong> First meetings from ABM-driven sequences (Dutch Wholesale and Manufacturing)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- What Didn't Work -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#10060;</span> What Didn't Work</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <ul>
+      <li><strong>ABM | Dutch Food Producers:</strong> 274 emails, 0 replies. 54 LinkedIn invites, 1 acceptance. Food producers responded better to direct outreach than ABM follow-up</li>
+      <li><strong>ABM | Dutch Logistics:</strong> Very low engagement (1 reply from 57 emails + 15 invites)</li>
+      <li><strong>Email reply rates dropped to 0.8%</strong> (from 1.7% in Jan) &mdash; the lowest of Q1. Volume increased but email underperformed. LinkedIn remained more effective</li>
+      <li><strong>Large food manufacturers (500-5K FTE):</strong> Lower per-contact engagement than 50-500 FTE campaigns</li>
+      <li>ABM sequences showed that seeing an ad doesn't guarantee email response &mdash; the warming effect may be more subtle than expected</li>
+    </ul>
+
+    <div class="sub-header">Deliverability</div>
+    <div class="narrative">
+      <p>Email deliverability improved to 98%. However, email open rates became clearly unreliable &mdash; security bots scanning incoming emails inflate open counts. LinkedIn invite acceptance rates remained low at 17%, likely reflecting increased volume and broader targeting.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Key Learnings -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#128161;</span> Key Learnings</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <div class="sub-header">Pain points that resonated</div>
+    <ul>
+      <li>Manual order processing (typing orders from emails/PDFs into ERP) &mdash; most effective across Manufacturing and Wholesale</li>
+      <li>Invoice matching and PO reconciliation resonated with Import &amp; Export companies</li>
+      <li>"Free 3-day PoC" resonated as a risk-reduction offer, not a pain point</li>
+      <li>Food producers responded to quality documentation and batch tracking challenges</li>
+    </ul>
+
+    <div class="sub-header">Objections received</div>
+    <ul>
+      <li>"We've already started an automation project" &mdash; more frequent as Dutch market becomes automation-aware</li>
+      <li>"Interesting, but not the right time" &mdash; most common deferral</li>
+      <li>IT/CIO becoming a more common stakeholder even in operations-led buying</li>
+      <li>Partner contacts asked about margins and implementation timelines</li>
+    </ul>
+
+    <div class="sub-header">Patterns: who responds vs. who books</div>
+    <ul>
+      <li>Gap between "responds" and "books" narrowed for 50-500 FTE companies &mdash; when they reply, they book</li>
+      <li>Free PoC angle showed promising conversion rates for a non-gift approach</li>
+      <li>ABM contacts slightly warmer in conversation but not dramatically easier to convert</li>
+      <li>"Traditional" generates volume but converts at lower rate than gifts or PoC</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Actions -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#127919;</span> Actions for Next Month</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <ul class="checklist">
+      <li>Launch ABM Company Aware for English-speaking markets (DACH, Benelux, Nordics)</li>
+      <li>Scale Purple-tier experiments &mdash; test AI agent-based approaches and Claude-powered research</li>
+      <li>Continue gift campaigns into Import &amp; Export and Horticulture (launched late Feb)</li>
+      <li>Launch dedicated Wholesale NL campaign with traditional messaging</li>
+      <li>Launch Machinery Manufacturing DE standalone campaign</li>
+      <li>Investigate email open rate tracking &mdash; determine if bot filtering can be enabled</li>
+      <li>Develop partner referral pipeline further (7 deals suggest real potential)</li>
+      <li>Test messaging with Claude/AI agent as a hook for personalization</li>
+    </ul>
+  </div>
+</div>
+
+</div><!-- /feb -->
+
+
+<!-- ============================================================ -->
+<!-- MARCH 2026 -->
+<!-- ============================================================ -->
+<div id="month-mar" class="month-content">
+
+<div class="kpi-row">
+  <div class="kpi c1"><div class="kpi-label">Meetings Booked</div><div class="kpi-val">~31</div><div class="kpi-sub">Outbound Stage 0</div></div>
+  <div class="kpi c2"><div class="kpi-label">Emails Sent</div><div class="kpi-val">4,996</div><div class="kpi-sub">74 replied (1.5%)</div></div>
+  <div class="kpi c3"><div class="kpi-label">LinkedIn Invites</div><div class="kpi-val">2,103</div><div class="kpi-sub">442 accepted (21%)</div></div>
+  <div class="kpi c4"><div class="kpi-label">Active Campaigns</div><div class="kpi-val">19</div><div class="kpi-sub">Most diverse month</div></div>
+</div>
+
+<!-- Campaign Overview -->
+<div class="section open">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#128203;</span> Campaign Overview</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <div class="sub-header">New campaigns launched in March</div>
+
+    <div class="campaign tier-red">
+      <div class="camp-name">1. Machinery Manufacturing DE 20-500 FTE</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Germany</span><span><strong>Vertical:</strong> Machinery Manufacturing</span>
+        <span><strong>Size:</strong> 20-500 FTEs</span><span><strong>DMUs:</strong> Operations, Director, C-Level</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#ef4444"></span>Red</span>
+        <span><strong>Messaging:</strong> Traditional pain points (German)</span>
+        <span><strong>Timeline:</strong> Started 3 March</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-green">
+      <div class="camp-name">2-4. ABM Company Aware | English (Manufacturing, Wholesale, Logistics)</div>
+      <div class="camp-meta">
+        <span><strong>Countries:</strong> DACH, Benelux (non-NL), Nordics, UK</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#22c55e"></span>Green (ABM)</span>
+        <span><strong>Messaging:</strong> ABM-driven, English language</span>
+        <span><strong>Timeline:</strong> Started 4 March</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-purple">
+      <div class="camp-name">5. Echo Agent | Wholesale 100-500 FTE</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Netherlands</span><span><strong>Vertical:</strong> Wholesale</span>
+        <span><strong>Size:</strong> 100-500 FTEs</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#8b5cf6"></span>Purple (Experiment)</span>
+        <span><strong>Messaging:</strong> AI "Echo Agent" &mdash; automated discovery agent as hook</span>
+        <span><strong>Timeline:</strong> Started 9 March</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-yellow">
+      <div class="camp-name">6. Gift n8 Wholesale Machinery NL 50-500 FTE</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Netherlands</span><span><strong>Vertical:</strong> Wholesale Machinery</span>
+        <span><strong>Size:</strong> 50-500 FTEs</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#eab308"></span>Yellow</span>
+        <span><strong>Messaging:</strong> Gift approach</span>
+        <span><strong>Timeline:</strong> Started 10 March</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-purple">
+      <div class="camp-name">7. Research Claude | Import &amp; Export NL 50-500 FTE</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Netherlands</span><span><strong>Vertical:</strong> Import &amp; Export</span>
+        <span><strong>Size:</strong> 50-500 FTEs</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#8b5cf6"></span>Purple (Experiment)</span>
+        <span><strong>Messaging:</strong> AI-generated company research as conversation starter</span>
+        <span><strong>Timeline:</strong> Started 13 March</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-purple">
+      <div class="camp-name">8. Claude Skill | Wholesale Machinery DE 50-500 FTE</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Germany</span><span><strong>Vertical:</strong> Wholesale Machinery</span>
+        <span><strong>Size:</strong> 50-500 FTEs</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#8b5cf6"></span>Purple (Experiment)</span>
+        <span><strong>Messaging:</strong> Claude-powered company research as personalization</span>
+        <span><strong>Timeline:</strong> Started 20 March</span>
+      </div>
+    </div>
+
+    <div class="campaign tier-red">
+      <div class="camp-name">9. Food Producers NL 50-500 FTE | 23/03</div>
+      <div class="camp-meta">
+        <span><strong>Country:</strong> Netherlands</span><span><strong>Vertical:</strong> Food Production</span>
+        <span><strong>Size:</strong> 50-500 FTEs</span>
+        <span><strong>Color:</strong> <span class="tier-dot" style="background:#ef4444"></span>Red</span>
+        <span><strong>Timeline:</strong> Started 23 March</span>
+      </div>
+    </div>
+
+    <div class="sub-header">Continuing from February</div>
+    <div class="narrative">
+      <p>ABM Company Aware (5 Dutch + 3 English), Wholesale NL, Free PoC | Materials Mfg NL, Referral Campaign v2, Gift Import &amp; Export NL, Gift Horticulture NL, Traditional | Machinery Mfg DE (winding down).</p>
+    </div>
+
+    <div class="sub-header">Target segments and company profiles</div>
+    <div class="narrative">
+      <p>March was the most diverse month with 19 actively sending campaigns across 4 categories &mdash; ABM Company Aware (8 campaigns including new English expansion), Traditional/Red (4), Gift/Yellow (3), and <strong>Purple experiments (3)</strong> testing AI-powered personalization.</p>
+      <p>The biggest development was the introduction of AI-powered campaign personalization through three Purple experiments: <strong>"Echo Agent"</strong> (AI discovery agent hook for Wholesale), <strong>"Research Claude"</strong> (AI-generated company research for Import &amp; Export), and <strong>"Claude Skill"</strong> (Claude-powered personalization for German Wholesale Machinery). Lleverage using its own AI capabilities as a differentiation tool in outbound.</p>
+      <p>Geography expanded: English-language ABM targeting Manufacturing, Wholesale, and Logistics outside NL. Germany received dedicated campaigns for both Machinery Manufacturing and Wholesale Machinery.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Performance Metrics -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#128200;</span> Performance Metrics</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <div class="metrics-grid">
+      <div class="metric-box">
+        <h4>Email</h4>
+        <div class="metric-row"><span class="label">Sent</span><span class="val">4,996</span></div>
+        <div class="metric-row"><span class="label">Delivered</span><span class="val">4,942<span class="pct">(99%)</span></span></div>
+        <div class="metric-row"><span class="label">Opened</span><span class="val">5,397<span class="pct">(108%)*</span></span></div>
+        <div class="metric-row"><span class="label">Replied</span><span class="val">74<span class="pct">(1.5%)</span></span></div>
+      </div>
+      <div class="metric-box">
+        <h4>LinkedIn</h4>
+        <div class="metric-row"><span class="label">Invites sent</span><span class="val">2,103</span></div>
+        <div class="metric-row"><span class="label">Accepted</span><span class="val">442<span class="pct">(21%)</span></span></div>
+        <div class="metric-row"><span class="label">Messages sent</span><span class="val">636</span></div>
+        <div class="metric-row"><span class="label">Opened</span><span class="val">246<span class="pct">(39%)</span></span></div>
+        <div class="metric-row"><span class="label">Replied</span><span class="val">86<span class="pct">(14%)</span></span></div>
+      </div>
+      <div class="metric-box">
+        <h4>Calling</h4>
+        <div class="metric-row"><span class="label">Calls made</span><span class="val">116</span></div>
+        <div class="metric-row"><span class="label">Answered</span><span class="val">46<span class="pct">(40%)</span></span></div>
+      </div>
+    </div>
+    <div class="warning" style="background:#fee2e2;border-color:#fecaca;color:#991b1b"><strong>108% email open rate confirms tracking is broken.</strong> When open count (5,397) exceeds sent count (4,996), email security bots are triggering multiple "opens" per email. Open rates should be disregarded entirely. Reply rates are the only reliable email engagement metric.</div>
+
+    <div class="sub-header">Meeting bookings</div>
+    <div class="narrative">
+      <p><strong>~31 Outbound Meetings booked this month.</strong></p>
+      <p>Maintained strong performance &mdash; slightly below February's peak of ~33, but demonstrated sustainability of the higher volume. More diversified source mix: gift campaigns continued strong, but ABM and Traditional contributed a larger share. Purple experiments started generating first replies and meetings by late March.</p>
+      <p>Gift campaigns collectively drove 238 calls. ABM Dutch Manufacturing became the single largest campaign by volume (736 emails). By color: Yellow maintained contribution, Green grew significantly (8 active ABM campaigns), Red steady, Purple showed early promise.</p>
+    </div>
+
+    <div class="sub-header">Response rate by campaign</div>
+    <table class="resp">
+      <thead><tr><th>#</th><th>Campaign</th><th>Total Replies</th><th>Email</th><th>LinkedIn</th><th>Calls</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><span class="tier-dot" style="background:#22c55e"></span>ABM | Dutch Manufacturing</td><td><strong>20</strong> <span class="pct">(1.7%)</span></td><td>10</td><td>10</td><td>&mdash;</td></tr>
+        <tr><td>2</td><td><span class="tier-dot" style="background:#ef4444"></span>Wholesale NL</td><td><strong>16</strong> <span class="pct">(1.8%)</span></td><td>7</td><td>9</td><td>&mdash;</td></tr>
+        <tr><td>3</td><td><span class="tier-dot" style="background:#22c55e"></span>ABM | Dutch Wholesale</td><td><strong>12</strong> <span class="pct">(3.1%)</span></td><td>7</td><td>5</td><td>&mdash;</td></tr>
+        <tr><td>4</td><td><span class="tier-dot" style="background:#eab308"></span>Gift n8 Wholesale Machinery</td><td><strong>11</strong></td><td>9</td><td>2</td><td>113</td></tr>
+        <tr><td>5</td><td><span class="tier-dot" style="background:#ef4444"></span>Food Producers NL 23/03</td><td><strong>11</strong> <span class="pct">(1.4%)</span></td><td>6</td><td>5</td><td>&mdash;</td></tr>
+        <tr><td>6</td><td><span class="tier-dot" style="background:#8b5cf6"></span>Echo Agent | Wholesale</td><td><strong>10</strong> <span class="pct">(2.0%)</span></td><td>6</td><td>4</td><td>&mdash;</td></tr>
+        <tr><td>7</td><td><span class="tier-dot" style="background:#ec4899"></span>Referral Campaign v2</td><td><strong>9</strong> <span class="pct">(10.3%)</span></td><td>2</td><td>7</td><td>&mdash;</td></tr>
+        <tr><td>8</td><td><span class="tier-dot" style="background:#eab308"></span>Gift Import &amp; Export NL</td><td><strong>8</strong></td><td>0</td><td>8</td><td>57</td></tr>
+        <tr><td>9</td><td><span class="tier-dot" style="background:#22c55e"></span>ABM | English Manufacturing</td><td><strong>7</strong> <span class="pct">(1.1%)</span></td><td>1</td><td>6</td><td>&mdash;</td></tr>
+        <tr><td>10</td><td><span class="tier-dot" style="background:#22c55e"></span>ABM | Dutch Food Producers</td><td><strong>6</strong> <span class="pct">(1.9%)</span></td><td>4</td><td>2</td><td>&mdash;</td></tr>
+        <tr><td>11</td><td><span class="tier-dot" style="background:#8b5cf6"></span>Research Claude | Import &amp; Export</td><td><strong>6</strong> <span class="pct">(2.3%)</span></td><td>1</td><td>5</td><td>&mdash;</td></tr>
+        <tr><td>12</td><td><span class="tier-dot" style="background:#22c55e"></span>ABM | Dutch Logistics</td><td><strong>5</strong> <span class="pct">(2.1%)</span></td><td>2</td><td>3</td><td>&mdash;</td></tr>
+        <tr><td>13</td><td><span class="tier-dot" style="background:#8b5cf6"></span>Free PoC | Materials Mfg NL</td><td><strong>5</strong> <span class="pct">(2.3%)</span></td><td>2</td><td>3</td><td>&mdash;</td></tr>
+        <tr><td>14</td><td><span class="tier-dot" style="background:#8b5cf6"></span>Claude Skill | Wholesale DE</td><td><strong>3</strong> <span class="pct">(1.0%)</span></td><td>3</td><td>0</td><td>&mdash;</td></tr>
+        <tr><td>15</td><td><span class="tier-dot" style="background:#ef4444"></span>Machinery Mfg DE</td><td><strong>2</strong> <span class="pct">(0.2%)</span></td><td>2</td><td>0</td><td>&mdash;</td></tr>
+        <tr><td>16</td><td><span class="tier-dot" style="background:#eab308"></span>Gift Horticulture NL</td><td><strong>2</strong></td><td>1</td><td>1</td><td>68</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-header">Pipeline generated</div>
+    <div class="narrative">
+      <p>37 new deals from outbound sources (~31 net-new outbound). Notable: <strong>Railtech</strong> (EUR 18K, Stage 4), <strong>Sucden Coffee</strong> (EUR 40K, Stage 1), <strong>Cargill</strong> (EUR 24K, Stage 1), <strong>AGCO Corporation</strong> (Stage 0). Two closed won: Upsell Ynvolve (EUR 50.4K) and Upsell Fusion (EUR 4.8K).</p>
+      <p><strong>Lowest closed-lost rate of Q1:</strong> only 3 deals lost (vs. 14 in Jan, 9 in Feb) &mdash; lead quality clearly improving. However, 23 deals still at Stage 0 and 14 at Stage 1, meaning most March pipeline is still maturing.</p>
+    </div>
+  </div>
+</div>
+
+<!-- What Worked -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#9989;</span> What Worked</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <div class="sub-header">Messaging angles that drove engagement</div>
+    <ul>
+      <li><strong>ABM | Dutch Wholesale hit 3.1% reply rate</strong> &mdash; highest non-gift, non-referral rate. LinkedIn Ad warming + tailored wholesale messaging works</li>
+      <li><strong>"Echo Agent" (2.0%)</strong> &mdash; positioning an AI discovery agent as a hook generates curiosity. Prospects intrigued by "AI that already analyzed their operations"</li>
+      <li><strong>"Research Claude" (2.3%)</strong> &mdash; AI-generated company research felt personalized and relevant, leading to more substantive conversations</li>
+      <li><strong>Referral Campaign v2 (10.3%)</strong> &mdash; confirms partner/referral as a high-yield channel</li>
+      <li>Gift n8 with 113 calls continued the proven pattern</li>
+    </ul>
+
+    <div class="sub-header">Segments that responded best</div>
+    <ul>
+      <li><strong>Dutch Wholesale:</strong> Three campaigns (Red, Green, Purple) all generated engagement &mdash; 38 combined replies. Wholesale emerged as a strong vertical after underperforming in Q4</li>
+      <li><strong>Import &amp; Export NL:</strong> Gift + Research Claude approaches both worked. C-Level at small firms highly responsive</li>
+      <li><strong>English-market Manufacturing:</strong> 7 replies from first English ABM campaign. Early but encouraging for geographic expansion</li>
+      <li><strong>Food Producers:</strong> Consistent across ABM and direct campaigns</li>
+    </ul>
+
+    <div class="sub-header">Sequences that converted to meetings</div>
+    <ul>
+      <li><strong>Gift campaigns:</strong> 238 total calls drove bulk of conversions. Gift n8 standout with 113 calls</li>
+      <li><strong>ABM | Dutch Manufacturing:</strong> Largest volume campaign converted replies from contacts with prior LinkedIn Ad engagement</li>
+      <li><strong>Wholesale NL + ABM Dutch Wholesale:</strong> Combined wholesale campaigns generated consistent meetings</li>
+      <li><strong>Echo Agent | Wholesale:</strong> First Purple experiment to convert to meetings</li>
+    </ul>
+  </div>
+</div>
+
+<!-- What Didn't Work -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#10060;</span> What Didn't Work</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <ul>
+      <li><strong>Machinery Manufacturing DE: 0.2% reply rate</strong> &mdash; 735 emails + 222 LinkedIn invites = 2 email replies, 0 LinkedIn replies. German market with traditional messaging failed at significant volume</li>
+      <li><strong>Claude Skill | Wholesale Machinery DE:</strong> Only 3 replies from 208 emails + 87 invites. Claude-powered personalization didn't resonate with German segment (launched late)</li>
+      <li><strong>ABM | English Logistics:</strong> 0 replies from 30 emails + 18 invites. Too early/small but no traction</li>
+      <li><strong>Gift n9 (Appliances Mfg):</strong> Paused shortly after launch</li>
+      <li><strong>Gift Horticulture NL:</strong> Only 2 replies + 68 calls. Gift approach that works in manufacturing didn't translate to horticulture</li>
+      <li><strong>German market overall:</strong> Combined 943 emails + 309 invites = 5 email replies, 0 LinkedIn replies. Germany needs a fundamentally different approach</li>
+    </ul>
+
+    <div class="sub-header">Deliverability</div>
+    <div class="narrative">
+      <p>Email deliverability at best-ever 99% (54 bounces). LinkedIn acceptance recovered to 21%. The only technical problem is the <strong>broken email open rate tracking</strong> &mdash; 108% open rate confirms bot/spam checkers are inflating numbers at scale. This has been escalating through Q1 (30% &rarr; 67% &rarr; 108%). Open rates should be deprecated until fixed.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Key Learnings -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#128161;</span> Key Learnings</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <div class="sub-header">Pain points that resonated</div>
+    <ul>
+      <li>Import &amp; Export: international order complexity, multilingual docs, cross-border compliance, multi-currency invoicing</li>
+      <li>Wholesale: repetitive order processing, especially when "Echo Agent" framed it as "we already analyzed your situation"</li>
+      <li>"Free PoC in 3 days" worked better as a follow-up step than a cold opener</li>
+    </ul>
+
+    <div class="sub-header">Objections received</div>
+    <ul>
+      <li>"We're evaluating multiple vendors" &mdash; appeared for first time. AI agent market becoming competitive in Dutch SME space</li>
+      <li>"Interesting but we need IT sign-off" &mdash; common at 200+ FTE companies</li>
+      <li>German contacts: more formal, process-oriented ("send documentation to procurement")</li>
+      <li>Some gift recipients: polite appreciation but genuinely not a fit</li>
+    </ul>
+
+    <div class="sub-header">Patterns: who responds vs. who books</div>
+    <ul>
+      <li><strong>Purple experiments:</strong> AI-powered personalization generated more curious, exploratory replies ("how does this work?") vs. Traditional's yes/no responses. Harder to convert but higher-quality when they do</li>
+      <li><strong>Dutch Wholesale confirmed as genuine ICP fit</strong> &mdash; multiple approaches (Red, Green, Purple) all generated engagement</li>
+      <li><strong>German market:</strong> low response across all non-gift approaches. Gift campaigns haven't been extensively tested in Germany yet</li>
+      <li><strong>English ABM:</strong> Manufacturing is the strongest vertical internationally</li>
+      <li><strong>Referral/partner:</strong> highest conversion rate, lowest volume &mdash; quality-over-quantity channel</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Actions -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#127919;</span> Actions for Next Month (April)</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <ul class="checklist">
+      <li>Deprioritize Machinery Manufacturing DE with traditional messaging &mdash; redirect to gift or ABM</li>
+      <li>Scale "Echo Agent" and "Research Claude" Purple experiments across more verticals</li>
+      <li>Test gift approach in Germany &mdash; traditional failed, gifts not yet tried there</li>
+      <li>Continue gift campaigns but be selective on new verticals (Horticulture underperformed)</li>
+      <li>Maintain ABM Company Aware as always-on engine across Dutch verticals</li>
+      <li>Evaluate English ABM after full month &mdash; focus Manufacturing, pause Logistics/I&amp;E if no improvement</li>
+      <li>Implement bot filtering for email opens or deprecate open rates entirely</li>
+      <li>Continue Referral Campaign v2 &mdash; high conversion warrants sustained investment</li>
+      <li>Make Wholesale NL, Import &amp; Export NL, Food Producers NL always-on campaigns</li>
+    </ul>
+  </div>
+</div>
+
+</div><!-- /mar -->
+
+
+<!-- ============================================================ -->
+<!-- Q1 SUMMARY -->
+<!-- ============================================================ -->
+<div id="month-q1" class="month-content">
+
+<div class="kpi-row">
+  <div class="kpi c1"><div class="kpi-label">Q1 Outbound Meetings</div><div class="kpi-val">~81</div><div class="kpi-sub">17 &rarr; 33 &rarr; 31</div></div>
+  <div class="kpi c2"><div class="kpi-label">Total Deals (All Sources)</div><div class="kpi-val">134</div><div class="kpi-sub">EUR 1.98M pipeline</div></div>
+  <div class="kpi c3"><div class="kpi-label">Closed Won</div><div class="kpi-val">5</div><div class="kpi-sub">EUR 93.6K</div></div>
+  <div class="kpi c4"><div class="kpi-label">ICP Fit</div><div class="kpi-val">96.7%</div><div class="kpi-sub">122 qualified deals</div></div>
+</div>
+
+<div class="section open">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#128202;</span> Quarter Overview</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <table class="summary">
+      <thead><tr><th>Metric</th><th>January</th><th>February</th><th>March</th><th>Q1 Total</th></tr></thead>
+      <tbody>
+        <tr><td>Outbound meetings booked</td><td>~17</td><td>~33</td><td>~31</td><td class="total">~81</td></tr>
+        <tr><td>Email sent</td><td>2,176</td><td>3,714</td><td>4,996</td><td class="total">10,886</td></tr>
+        <tr><td>Email replied</td><td>37 (1.7%)</td><td>31 (0.8%)</td><td>74 (1.5%)</td><td class="total">142 (1.3%)</td></tr>
+        <tr><td>LinkedIn invites</td><td>1,155</td><td>1,537</td><td>2,103</td><td class="total">4,795</td></tr>
+        <tr><td>LinkedIn accepted</td><td>255 (22%)</td><td>267 (17%)</td><td>442 (21%)</td><td class="total">964 (20%)</td></tr>
+        <tr><td>LinkedIn messages</td><td>363</td><td>418</td><td>636</td><td class="total">1,417</td></tr>
+        <tr><td>LinkedIn replied</td><td>85 (23%)</td><td>67 (16%)</td><td>86 (14%)</td><td class="total">238 (17%)</td></tr>
+        <tr><td>Calls made</td><td>101</td><td>148</td><td>116</td><td class="total">365</td></tr>
+        <tr><td>Calls answered</td><td>31 (31%)</td><td>44 (30%)</td><td>46 (40%)</td><td class="total">121 (33%)</td></tr>
+        <tr><td>Active campaigns</td><td>10</td><td>14</td><td>19</td><td class="total">30+ unique</td></tr>
+        <tr><td>HubSpot deals (all sources)</td><td>26</td><td>55</td><td>53</td><td class="total">134</td></tr>
+        <tr><td>Closed Won</td><td>1 (EUR 21.6K)</td><td>2 (EUR 16.8K)</td><td>2 (EUR 55.2K)</td><td class="total">5 (EUR 93.6K)</td></tr>
+        <tr><td>Closed Lost</td><td>14</td><td>9</td><td>3</td><td class="total">26</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section open">
+  <div class="section-header" onclick="toggleSection(this)">
+    <h3><span style="font-size:18px">&#128293;</span> Key Q1 Trends</h3>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="section-body">
+    <div class="trends">
+      <div class="trend">
+        <div class="trend-num">1. Volume scaled 2.3x</div>
+        <div class="trend-text">From 2,176 emails + 1,155 LinkedIn invites in January to 4,996 + 2,103 in March. Outbound infrastructure matured significantly.</div>
+      </div>
+      <div class="trend">
+        <div class="trend-num">2. Lead quality improved dramatically</div>
+        <div class="trend-text">Closed-lost rate dropped from 54% (Jan) to 8% (Mar). Targeting and messaging refinement is working.</div>
+      </div>
+      <div class="trend">
+        <div class="trend-num">3. Gift campaigns remain dominant</div>
+        <div class="trend-text">32 of 81 outbound deals (40%) came from Yellow tier. The chocolate + phone call formula is unmatched.</div>
+      </div>
+      <div class="trend">
+        <div class="trend-num">4. ABM + Purple experiments growing</div>
+        <div class="trend-text">Green + Purple together contributed 22 deals (27% of outbound). These channels are maturing.</div>
+      </div>
+      <div class="trend">
+        <div class="trend-num">5. Dutch market is core</div>
+        <div class="trend-text">75 of 92 non-partner deals (81%) were Netherlands. International expansion started but NL remains the engine.</div>
+      </div>
+      <div class="trend">
+        <div class="trend-num">6. German market needs a reset</div>
+        <div class="trend-text">Traditional messaging failed in Germany. Gift/ABM approaches haven't been tested there yet &mdash; Q2 opportunity.</div>
+      </div>
+      <div class="trend">
+        <div class="trend-num">7. Email open rates are broken</div>
+        <div class="trend-text">Bot/spam checkers make open tracking unreliable (30% &rarr; 67% &rarr; 108%). Reply rate is the only dependable email metric.</div>
+      </div>
+    </div>
+
+    <div class="sub-header" style="margin-top:24px">Outbound deal sources (Q1)</div>
+    <table class="resp">
+      <thead><tr><th>Source</th><th>Deals</th><th>Share</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tier-dot" style="background:#eab308"></span>Gift Campaign (Yellow)</td><td><strong>32</strong></td><td>39.5%</td></tr>
+        <tr><td><span class="tier-dot" style="background:#6366f1"></span>Outbound LinkedIn</td><td><strong>16</strong></td><td>19.8%</td></tr>
+        <tr><td><span class="tier-dot" style="background:#f97316"></span>Outbound Email</td><td><strong>15</strong></td><td>18.5%</td></tr>
+        <tr><td><span class="tier-dot" style="background:#8b5cf6"></span>Outbound Network</td><td><strong>10</strong></td><td>12.3%</td></tr>
+        <tr><td><span class="tier-dot" style="background:#22c55e"></span>Outbound Call</td><td><strong>1</strong></td><td>1.2%</td></tr>
+        <tr style="font-weight:700;background:#f8fafc"><td>Total Outbound</td><td><strong>81</strong></td><td>66.4% of all deals</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-header">Outbound tier performance (Q1)</div>
+    <table class="resp">
+      <thead><tr><th>Tier</th><th>Deals</th><th>Share of Outbound</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tier-dot" style="background:#eab308"></span>Yellow (Gift)</td><td><strong>32</strong></td><td>49.2%</td></tr>
+        <tr><td><span class="tier-dot" style="background:#22c55e"></span>Green (ABM)</td><td><strong>14</strong></td><td>21.5%</td></tr>
+        <tr><td><span class="tier-dot" style="background:#8b5cf6"></span>Purple (Experiment)</td><td><strong>8</strong></td><td>12.3%</td></tr>
+        <tr><td><span class="tier-dot" style="background:#f97316"></span>Orange</td><td><strong>6</strong></td><td>9.2%</td></tr>
+        <tr><td><span class="tier-dot" style="background:#ef4444"></span>Red</td><td><strong>5</strong></td><td>7.7%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</div><!-- /q1 -->
+
+<footer>Lleverage Q1 2026 Monthly Outbound Reviews &mdash; Generated April 1, 2026</footer>
+
+</div><!-- /container -->
+
+<script>
+function showMonth(id) {
+  document.querySelectorAll('.month-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.month-tab').forEach(el => {
+    el.classList.remove('active','active-jan','active-feb','active-mar','active-q1');
+  });
+  document.getElementById('month-' + id).classList.add('active');
+  const tabs = document.querySelectorAll('.month-tab');
+  const idx = {jan:0,feb:1,mar:2,q1:3}[id];
+  tabs[idx].classList.add('active', 'active-' + id);
+}
+
+function toggleSection(header) {
+  header.parentElement.classList.toggle('open');
+}
+</script>
+</body>
+</html>
