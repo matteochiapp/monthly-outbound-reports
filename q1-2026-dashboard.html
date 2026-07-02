@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lleverage Q1 2026 Demand Generation Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#f8f9fb;color:#1e293b;padding:24px;min-height:100vh}
+.container{max-width:1400px;margin:0 auto}
+header{text-align:center;margin-bottom:32px}
+header h1{font-size:28px;font-weight:700;color:#1e293b;margin-bottom:6px}
+header p{font-size:15px;color:#64748b;margin-bottom:10px}
+.badge{display:inline-block;background:#6366f1;color:#fff;font-size:13px;font-weight:600;padding:4px 14px;border-radius:20px}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.kpi-card{background:#fff;border-radius:12px;padding:24px;border:1px solid #e5e7eb;text-align:center;position:relative;overflow:hidden}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.kpi-card.blue::before{background:#6366f1}
+.kpi-card.orange::before{background:#f97316}
+.kpi-card.green::before{background:#22c55e}
+.kpi-card.purple::before{background:#8b5cf6}
+.kpi-label{font-size:13px;font-weight:500;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.kpi-value{font-size:36px;font-weight:700;color:#1e293b}
+.kpi-sub{font-size:13px;color:#94a3b8;margin-top:4px}
+.card{background:#fff;border-radius:12px;padding:24px;border:1px solid #e5e7eb;margin-bottom:24px}
+.card h3{font-size:16px;font-weight:600;color:#1e293b;margin-bottom:16px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-bottom:24px}
+.chart-container{position:relative;width:100%;height:300px}
+.chart-container-sm{position:relative;width:100%;height:280px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:10px 12px;border-bottom:2px solid #e5e7eb;color:#64748b;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+td{padding:10px 12px;border-bottom:1px solid #f1f5f9}
+.progress-bar{background:#f1f5f9;border-radius:4px;height:8px;overflow:hidden;min-width:80px}
+.progress-fill{height:100%;border-radius:4px}
+.tier-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:middle}
+footer{text-align:center;padding:24px 0;color:#94a3b8;font-size:13px}
+@media(max-width:900px){.kpi-row,.grid-2,.grid-3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Lleverage Demand Generation Dashboard</h1>
+  <p>Q1 2026 (January 5 &ndash; March 31, 2026) &mdash; Deal Sources &amp; Channel Analytics</p>
+  <span class="badge">Q1 2026</span>
+</header>
+
+<!-- KPIs -->
+<div class="kpi-row">
+  <div class="kpi-card blue">
+    <div class="kpi-label">Total Deals</div>
+    <div class="kpi-value">122</div>
+    <div class="kpi-sub">&nbsp;</div>
+  </div>
+  <div class="kpi-card orange">
+    <div class="kpi-label">Outbound Deals</div>
+    <div class="kpi-value">81</div>
+    <div class="kpi-sub">66.4% of total</div>
+  </div>
+  <div class="kpi-card green">
+    <div class="kpi-label">Inbound Deals</div>
+    <div class="kpi-value">41</div>
+    <div class="kpi-sub">33.6% of total</div>
+  </div>
+  <div class="kpi-card purple">
+    <div class="kpi-label">ICP Fit</div>
+    <div class="kpi-value">96.7%</div>
+    <div class="kpi-sub">&nbsp;</div>
+  </div>
+</div>
+
+<!-- Total Deals per Week -->
+<div class="card">
+  <h3>Total Deals per Week</h3>
+  <div class="chart-container"><canvas id="totalWeekly"></canvas></div>
+</div>
+
+<!-- Outbound + Inbound per Week -->
+<div class="grid-2">
+  <div class="card">
+    <h3>Outbound Deals per Week</h3>
+    <div class="chart-container"><canvas id="outboundWeekly"></canvas></div>
+  </div>
+  <div class="card">
+    <h3>Inbound Deals per Week</h3>
+    <div class="chart-container"><canvas id="inboundWeekly"></canvas></div>
+  </div>
+</div>
+
+<!-- Deal Sources bar + pie -->
+<div class="grid-2">
+  <div class="card">
+    <h3>Deal Sources (All)</h3>
+    <div class="chart-container" style="height:400px"><canvas id="sourcesBar"></canvas></div>
+  </div>
+  <div class="card">
+    <h3>Deal Sources Pie</h3>
+    <div class="chart-container" style="height:400px"><canvas id="sourcesPie"></canvas></div>
+  </div>
+</div>
+
+<!-- Three donuts row -->
+<div class="grid-3">
+  <div class="card">
+    <h3>Outbound Tiers</h3>
+    <div class="chart-container-sm"><canvas id="tiersDonut"></canvas></div>
+  </div>
+  <div class="card">
+    <h3>Countries / Regions</h3>
+    <div class="chart-container-sm"><canvas id="countriesDonut"></canvas></div>
+  </div>
+  <div class="card">
+    <h3>Stage 1 Entries per Week</h3>
+    <div class="chart-container-sm"><canvas id="stage1Line"></canvas></div>
+  </div>
+</div>
+
+<!-- Breakdown Tables -->
+<div class="grid-3">
+  <div class="card">
+    <h3>Total Deal Sources Breakdown</h3>
+    <table>
+      <thead><tr><th>Source</th><th>Deals</th><th>Share</th><th></th></tr></thead>
+      <tbody id="allSourcesTable"></tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h3>Outbound Tier Breakdown</h3>
+    <table>
+      <thead><tr><th>Tier</th><th>Deals</th><th>Share</th><th></th></tr></thead>
+      <tbody id="tiersTable"></tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h3>Inbound Source Breakdown</h3>
+    <table>
+      <thead><tr><th>Source</th><th>Deals</th><th>Share</th><th></th></tr></thead>
+      <tbody id="inboundTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<footer>Lleverage Q1 2026 &mdash; Generated March 31, 2026</footer>
+</div>
+
+<script>
+Chart.defaults.font.family = 'Inter';
+Chart.defaults.font.size = 12;
+Chart.defaults.plugins.legend.labels.usePointStyle = true;
+Chart.defaults.plugins.legend.labels.pointStyleWidth = 10;
+
+const weeks = ['Jan 5','Jan 12','Jan 19','Jan 26','Feb 2','Feb 9','Feb 16','Feb 23','Mar 2','Mar 9','Mar 16','Mar 23','Mar 30'];
+const totalData = [4,6,6,10,8,12,14,12,11,11,14,11,3];
+const outboundData = [1,6,5,5,5,8,13,7,8,9,6,7,1];
+const inboundData = [3,0,1,5,3,4,1,5,3,2,8,4,2];
+const stage1Data = [1,6,3,6,7,9,3,10,7,3,7,10,0];
+
+const blue = '#6366f1';
+const green = '#22c55e';
+const orange = '#f97316';
+const purple = '#8b5cf6';
+
+function barOpts(max) {
+  return {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => c.parsed.y + ' deals' } } },
+    scales: {
+      y: { beginAtZero: true, max: max, grid: { color: '#f1f5f9' }, ticks: { stepSize: 2 } },
+      x: { grid: { display: false } }
+    }
+  };
+}
+
+// Total Deals per Week
+new Chart(document.getElementById('totalWeekly'), {
+  type: 'bar',
+  data: { labels: weeks, datasets: [{ data: totalData, backgroundColor: blue, borderRadius: 6, maxBarThickness: 48 }] },
+  options: barOpts(16)
+});
+
+// Outbound per Week
+new Chart(document.getElementById('outboundWeekly'), {
+  type: 'bar',
+  data: { labels: weeks, datasets: [{ data: outboundData, backgroundColor: orange, borderRadius: 6, maxBarThickness: 40 }] },
+  options: barOpts(16)
+});
+
+// Inbound per Week
+new Chart(document.getElementById('inboundWeekly'), {
+  type: 'bar',
+  data: { labels: weeks, datasets: [{ data: inboundData, backgroundColor: green, borderRadius: 6, maxBarThickness: 40 }] },
+  options: barOpts(10)
+});
+
+// Deal Sources - Horizontal Bar
+const allSources = [
+  { label: 'Gift Campaign', value: 32 },
+  { label: 'Outbound LinkedIn', value: 16 },
+  { label: 'Outbound Email', value: 15 },
+  { label: 'Inbound SEO/Direct', value: 13 },
+  { label: 'Outbound Network', value: 10 },
+  { label: 'Inbound LinkedIn Organic', value: 10 },
+  { label: 'Upsell', value: 7 },
+  { label: 'Partner', value: 7 },
+  { label: 'Inbound Network', value: 4 },
+  { label: 'Event', value: 3 },
+  { label: 'Webinar', value: 2 },
+  { label: 'Outbound Call', value: 1 },
+  { label: 'Referral', value: 1 },
+  { label: 'Other', value: 1 }
+];
+const sourceColors = ['#ef4444','#6366f1','#f97316','#22c55e','#8b5cf6','#06b6d4','#eab308','#ec4899','#14b8a6','#f59e0b','#64748b','#a855f7','#10b981','#cbd5e1'];
+
+new Chart(document.getElementById('sourcesBar'), {
+  type: 'bar',
+  data: {
+    labels: allSources.map(s => s.label),
+    datasets: [{ data: allSources.map(s => s.value), backgroundColor: sourceColors, borderRadius: 4, maxBarThickness: 28 }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => c.parsed.x + ' deals (' + (c.parsed.x/122*100).toFixed(1) + '%)' } } },
+    scales: { x: { beginAtZero: true, grid: { color: '#f1f5f9' } }, y: { grid: { display: false } } }
+  }
+});
+
+// Deal Sources Pie
+new Chart(document.getElementById('sourcesPie'), {
+  type: 'doughnut',
+  data: {
+    labels: allSources.map(s => s.label),
+    datasets: [{ data: allSources.map(s => s.value), backgroundColor: sourceColors, borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, cutout: '55%',
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 12, font: { size: 11 } } },
+      tooltip: { callbacks: { label: c => c.label + ': ' + c.parsed + ' (' + (c.parsed/122*100).toFixed(1) + '%)' } }
+    }
+  }
+});
+
+// Outbound Tiers Donut
+const tiers = [
+  { label: 'Yellow', value: 32, color: '#eab308' },
+  { label: 'Green', value: 14, color: '#22c55e' },
+  { label: 'Purple', value: 8, color: '#8b5cf6' },
+  { label: 'Orange', value: 6, color: '#f97316' },
+  { label: 'Red', value: 5, color: '#ef4444' }
+];
+new Chart(document.getElementById('tiersDonut'), {
+  type: 'doughnut',
+  data: {
+    labels: tiers.map(t => t.label),
+    datasets: [{ data: tiers.map(t => t.value), backgroundColor: tiers.map(t => t.color), borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, cutout: '55%',
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 10, font: { size: 11 } } },
+      tooltip: { callbacks: { label: c => c.label + ': ' + c.parsed + ' (' + (c.parsed/65*100).toFixed(1) + '%)' } }
+    }
+  }
+});
+
+// Countries Donut
+const countries = [
+  { label: 'Netherlands', value: 75, color: '#f97316' },
+  { label: 'Germany', value: 10, color: '#06b6d4' },
+  { label: 'Belgium', value: 2, color: '#8b5cf6' },
+  { label: 'Armenia', value: 1, color: '#eab308' },
+  { label: 'Lithuania', value: 1, color: '#22c55e' },
+  { label: 'Sweden', value: 1, color: '#ef4444' },
+  { label: 'UAE', value: 1, color: '#ec4899' },
+  { label: 'United Kingdom', value: 1, color: '#6366f1' }
+];
+new Chart(document.getElementById('countriesDonut'), {
+  type: 'doughnut',
+  data: {
+    labels: countries.map(c => c.label),
+    datasets: [{ data: countries.map(c => c.value), backgroundColor: countries.map(c => c.color), borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, cutout: '55%',
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 10, font: { size: 11 } } },
+      tooltip: { callbacks: { label: c => c.label + ': ' + c.parsed + ' (' + (c.parsed/92*100).toFixed(1) + '%)' } }
+    }
+  }
+});
+
+// Stage 1 Line
+new Chart(document.getElementById('stage1Line'), {
+  type: 'line',
+  data: {
+    labels: weeks,
+    datasets: [{
+      data: stage1Data, borderColor: '#6366f1', backgroundColor: 'rgba(99,102,241,.1)',
+      fill: true, tension: .3, pointRadius: 4, pointBackgroundColor: '#6366f1', borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => c.parsed.y + ' deals entered Stage 1' } } },
+    scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' } }, x: { grid: { display: false }, ticks: { font: { size: 10 } } } }
+  }
+});
+
+// Breakdown Tables
+function buildTable(id, data, total, colorMap) {
+  const tbody = document.getElementById(id);
+  data.forEach(item => {
+    const pct = (item.value / total * 100).toFixed(1);
+    const color = colorMap ? (colorMap[item.label] || '#6366f1') : '#6366f1';
+    const dot = colorMap ? '<span class="tier-dot" style="background:'+color+'"></span>' : '';
+    tbody.innerHTML += '<tr><td>'+dot+item.label+'</td><td><strong>'+item.value+'</strong></td><td>'+pct+'%</td><td><div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%;background:'+color+'"></div></div></td></tr>';
+  });
+}
+
+buildTable('allSourcesTable', allSources.map(s => ({ label: s.label, value: s.value })), 122, null);
+
+const tierColors = { Yellow: '#eab308', Green: '#22c55e', Purple: '#8b5cf6', Orange: '#f97316', Red: '#ef4444' };
+buildTable('tiersTable', tiers.map(t => ({ label: t.label, value: t.value })), 65, tierColors);
+
+const inboundSources = [
+  { label: 'Inbound SEO/Direct', value: 13 },
+  { label: 'Inbound LinkedIn Organic', value: 10 },
+  { label: 'Partner', value: 7 },
+  { label: 'Inbound Network', value: 4 },
+  { label: 'Event', value: 3 },
+  { label: 'Webinar', value: 2 },
+  { label: 'Referral', value: 1 },
+  { label: 'Other', value: 1 }
+];
+const inboundColors = { 'Inbound SEO/Direct': '#22c55e', 'Inbound LinkedIn Organic': '#06b6d4', Partner: '#ec4899', 'Inbound Network': '#14b8a6', Event: '#f59e0b', Webinar: '#64748b', Referral: '#10b981', Other: '#cbd5e1' };
+buildTable('inboundTable', inboundSources, 41, inboundColors);
+</script>
+</body>
+</html>
